@@ -1,50 +1,28 @@
-// trying to code a simple web server 
-// in actix-web 
-use std::io::Result;
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
-use serde::{Serialize, Deserialize};
+mod handlers;
+mod models;
+mod db;
 
-// define the Request struct usign serialize 
-#[derive(Serialize, Deserialize)]
-struct RequestData {
-    id: u8,
-    username: String,
-    password: String
-}
+use actix_web::{web, App, HttpServer};
+use dotenv::dotenv;
+use std::env;
+use db::get_db_pool;
 
-// we're also defining the Response we're going to send
-#[derive(serde::Serialize)]
-struct ResponseData {
-    text: String,
-    received_data: RequestData
-}
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    dotenv().ok();
 
-// write the get & post handlers 
-async fn get() -> impl Responder {
-    HttpResponse::Ok().body("hello from GET handler")
-}
+    let addr = env::var("SERVER_ADDR").unwrap_or_else(|_| "127.0.0.1:8080".to_string());
+    let db_pool = get_db_pool().await.expect("Failed to create DB pool");
 
-// then we want our handler to have some request data so our post fn will take the Struct RequestData as a parameter
-async fn post(data: web::Json<RequestData>) -> impl Responder {
-    let received_data = data.into_inner();
-    let response_data = ResponseData {
-        text: "Below is the Response in JSON formatting".to_string(),
-        received_data: received_data
-    };
-    HttpResponse::Ok().json(response_data)
-}
+    println!("🚀 Server running at http://{}", addr);
 
-// write the main fn logic 
-#[actix_web::main]  // to make the main fn asycn 
-
-async fn main() -> Result<()> {
-    HttpServer::new(|| {
+    HttpServer::new(move || {
         App::new()
-        // register the above handlers, & we'll do that using .route built-in function
-        .route("/", web::get().to(get))
-        .route("/post", web::post().to(post))
+            .app_data(web::Data::new(db_pool.clone()))
+            .route("/users", web::post().to(handlers::create_user))
+            .route("/get-users", web::get().to(handlers::get_users))
     })
-    .bind("127.0.0.1:8080")?
+    .bind(addr)?
     .run()
     .await
 }
