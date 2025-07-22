@@ -102,7 +102,7 @@ curl http://127.0.0.1:8080/get-users
 - [ ] Dockerize the backend
 - [ ] Add a frontend (likely React or Svelte)
 - [ ] Deploy backend & frontend (e.g., Fly.io, Railway, Netlify)
-
+- ![Progress till now](assets/progess.png)
 ---
 
 ## 📝 License
