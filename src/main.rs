@@ -21,7 +21,9 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(db_pool.clone()))
             .route("/users", web::post().to(handlers::create_user))
             .route("/get-users", web::get().to(handlers::get_users))
-    })
+            .route("/users/{id}", web::put().to(handlers::update_user))
+            .route("/users/{id}", web::delete().to(handlers::delete_user))
+    }) // 👈 now it returns App
     .bind(addr)?
     .run()
     .await
