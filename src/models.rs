@@ -18,3 +18,12 @@ pub struct User {
     pub email: Option<String>,
     pub created_at: chrono::NaiveDateTime,
 }
+
+
+#[derive(Deserialize)]
+pub struct UserUpdateRequest {
+    pub username: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub email: Option<String>,
+}
