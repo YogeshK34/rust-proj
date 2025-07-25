@@ -66,19 +66,21 @@ psql -U test_user -d testing_db -f sql/schema.sql
 sudo -u postgres psql -U test_user -d testing_db -h 127.0.0.1 -W
 ```
 
-# Inside the shell paste below commands to grant access :
-# 1. Access the public schema 
+Inside the shell paste below commands to grant access :
+ 
+Access the public schema 
 
 ```bash 
 GRANT ALL PRIVILEGES ON SCHEMA public TO test_user;
 ```
-# 2. Perform UPDATE DELETE INSERT SELECT operations
+Perform UPDATE DELETE INSERT SELECT operations
 
 ```bash 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO test_user;
 ```
 
-# 3. Grant access to all sequences 
+Grant access to all sequences 
+
 ```bash
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO test_user;
 ```
