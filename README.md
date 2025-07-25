@@ -59,30 +59,33 @@ psql -U test_user -d testing_db -f sql/schema.sql
 
 ---
 
-### 4. Grant access to users 
+### 4. Grant Access to Users
+
+1. **Switch to the PostgreSQL shell as your created user:**
 
 ```bash
-# Switch to your created user
 sudo -u postgres psql -U test_user -d testing_db -h 127.0.0.1 -W
 ```
 
-Inside the shell paste below commands to grant access :
- 
-Access the public schema 
+2. **Inside the PostgreSQL shell, execute the following commands:**
 
-```bash 
+- **Grant access to the `public` schema:**
+
+```sql
 GRANT ALL PRIVILEGES ON SCHEMA public TO test_user;
 ```
-Perform UPDATE DELETE INSERT SELECT operations
 
-```bash 
+- **Allow `UPDATE`, `DELETE`, `INSERT`, and `SELECT` operations on all tables:**
+
+```sql
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO test_user;
 ```
 
-Grant access to all sequences 
+- **Grant access to all sequences in the schema:**
 
-```bash
+```sql
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO test_user;
+```
 ```
 
 ## 💻 Running the Server
