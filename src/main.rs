@@ -23,7 +23,7 @@ async fn main() -> std::io::Result<()> {
             .route("/get-users", web::get().to(handlers::get_users))
             .route("/users/{id}", web::put().to(handlers::update_user))
             .route("/users/{id}", web::delete().to(handlers::delete_user))
-    }) // 👈 now it returns App
+    })
     .bind(addr)?
     .run()
     .await
